@@ -1,0 +1,81 @@
+from tkinter import *
+from tkinter import scrolledtext
+import secrets
+import string
+
+#основное окно
+okno1=Tk()
+lbl1 = Label(okno1, text="Генератор паролей", font=("Tames new roman", 15))
+okno1.resizable(width=100, height=100)
+lbl1.grid(column=0, row=0, columnspan=2, sticky=W+E, padx=20, pady=20)
+
+#функция генерации пароля
+def par():  
+#условие для назначения набора символов паролей 
+    if slozh.get() == 1:
+        alf=alfavit1
+    else:
+        if slozh.get() == 2:
+            alf=alfavit2
+        else:
+            if slozh.get() == 3:
+                alf=alfavit3     
+#Цикл  для вывода заданного количества паролей (kolich), с нумерацией (n)
+    for n in range (1, int(kolich.get())+1):
+        result.insert(END, '\n'+str(n)+". ")
+#Цикл для составления пароля заданной длины длины (length), заданного алфавита (alf)
+        for i in range (int(length.get())):
+            password = ''.join(secrets.choice(alf))
+            result.insert(END, password)
+
+#Функция очистки окна вывода паролей
+def erase():   
+    result.delete('0.1', END)
+   
+#Строка ввода длины пароля
+lbl2 = Label(okno1, text=" Введите длину паролей", font=("Times New Roman", 10))
+lbl2.grid(column=0, row=3, sticky=W)
+#окно ввода длины пароля
+length = Entry(okno1, width=3, font=("Times New Roman", 10), justify=CENTER)  
+length.grid(column=1, row=3)
+
+#строка ввода количества паролей
+lbl3 = Label(okno1, text=" Введите количество паролей", font=("Times New Roman", 10))
+lbl3.grid(column=0, row=4, sticky=W)
+#окно ввода количества паролей
+kolich = Entry(okno1,width=3, font=("Times New Roman", 10), justify=CENTER)  
+kolich.grid(column=1, row=4)
+
+#Радиокнопки выбора сложности паролей
+slozh = IntVar()
+slozh.set(2)#по умолчанию включена кнопка 2
+
+lbl4 = Label(okno1, text=" Установите сложность паролей", font=("Times New Roman", 10))
+lbl4.grid(column=0, row=5, columnspan=2, sticky=W, pady=10)
+
+knopka1=Radiobutton(text="I" , variable=slozh, value=1, font=("Times New Roman", 10))
+knopka1.grid(column=0, row=6, sticky=W)
+knopka2=Radiobutton(text="II", variable=slozh,value=2, font=("Times New Roman", 10))
+knopka2.grid(column=0, row=6)
+knopka3=Radiobutton(text="III", variable=slozh, value=3, font=("Times New Roman", 10))
+knopka3.grid(column=0, row=6, sticky=E)
+
+
+#Данные алфавитов символов для паролей разного уровня сложности
+alfavit1 = string.digits #цифры от 0-9
+alfavit2 = string.ascii_letters + string.digits #цифры от 0-9 и латинские буквы заглавные и строчные
+alfavit3 = string.digits+string.ascii_letters+ '@'+'#'+ '$'+'%'+'*'+ '_'+ 'й'+ 'ц'+'г'+'ш'+'щ'+'ф'+'ы'+'п'+'л'+'д'+'ж'+'э'+'я'+'ч'+'и'+'ь'+'ъ'+'ю'+ 'Й'+'Ц'+'Г'+'Ш'+'Щ'+'Ф'+'Ы'+'П'+'Л'+'Д'+'Ж'+'Э'+'Я'+'Ч'+'И'+'Ь'+'Ъ'+'Ю' #цифры от 0-9, латинские буквы заглавные и строчные, некоторые символы и некоторые (для избежания путаницы между латинскими и кириллическими буквами) буквы кириллицы строчные и заглавные
+            
+#Кнопка генерации паролей
+btn = Button(okno1, text="Сгенерировать",bg='green', fg='yellow', font=('Times New Roman', 12), width=20, height=2, command=par)
+btn.grid(column=0, row=7, padx=120, pady=30, sticky=W, columnspan=3)
+
+#Кнопка очистки окна вывода результата
+btn = Button(okno1, text="Сбросить",bg='blue', fg='yellow', font=('Times New Roman', 12), width=20, height=2, command = erase)
+btn.grid(column=0, row=8, padx=120, pady=10, sticky=W, columnspan=2)
+
+#Окно вывода результата
+result = scrolledtext.ScrolledText(okno1,width=23, height=14, font=('Times New Roman', 12))
+result.grid(column=0, row=9, columnspan=2,sticky=W, padx=90, pady=30)  
+
+okno1.mainloop()
